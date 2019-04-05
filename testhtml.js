@@ -10,7 +10,7 @@ function GIF() {
 
 GIF.prototype.constructor = GIF;
 GIF.prototype.isValidFile = function () {
-    return ((this.buffer[0] === 71 && this.buffer[1] === 73 && this.buffer[2] === 70));
+    return ((this.buffer[0] === 71 && this.buffer[1] === 73 && this.buffer[2] === 70 && this.buffer[this.buffer.length-1] == 59));
 }
 GIF.prototype.loadFile = function (filename) {
     var h = new XMLHttpRequest();
@@ -39,7 +39,13 @@ GIF.prototype.loadFile = function (filename) {
     h.open('GET', filename, true);
     h.send();
 }
-
+GIF.prototype.saveOriginal = fileName =>{
+    var blob = new Blob([new Uint8Array(this.buffer)], {type: "image/gif"});
+    var link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+}
 function Load() {
     var g = new GIF();
     g.loadFile("sample_1.gif");
