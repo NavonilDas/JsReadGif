@@ -150,10 +150,8 @@ GIF.prototype.LZWDecode = function (minCodeSize, data, shape) {
         }
 
         if (code === eoiCode) break;
-        if (dict[last]) dict[last] = [];
         if (code < dict.length) {
             if (last !== clearCode) {
-                console.log(dict[last])
                 dict.push(dict[last].concat(dict[code][0]));
             }
         }
@@ -170,6 +168,7 @@ GIF.prototype.LZWDecode = function (minCodeSize, data, shape) {
     var tmpCan = document.createElement('canvas');
     tmpCan.width = shape.w;
     tmpCan.height = shape.h;
+    console.log(output.length)
     var imgData = tmpCan.getContext('2d').getImageData(0, 0, shape.w, shape.h);
     for (var i = 0; i < imgData.data.length / 4; i++) {
         imgData.data[4 * i] = this.gloColTable[output[i]].r;
@@ -193,9 +192,7 @@ GIF.prototype.parseImgData = function (shape) {
         if (tmpB == 0) break;
         data.push(tmpB);
     }
-    try{
     return this.LZWDecode(minCodeSize, data, shape);
-    }catch(e){console.log(e)}
 }
 GIF.prototype.loadFile = function (filename) {
     var h = new XMLHttpRequest();
